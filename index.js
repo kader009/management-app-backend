@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
@@ -29,22 +29,35 @@ async function run() {
     const taskDb = client.db('tasksDB');
     const tasksCollection = taskDb.collection('taskCollection');
 
-    app.get('/tasks', async (req, res) =>{
+    app.get('/tasks', async (req, res) => {
       const result = await tasksCollection.find({}).toArray();
-      res.send(result)
-    })
+      res.send(result);
+    });
 
-    app.post('/tasks', async (req, res) =>{
+    app.post('/tasks', async (req, res) => {
       const tasksData = req.body;
       const result = await tasksCollection.insertOne(tasksData);
-      res.send(result)
-    })
+      res.send(result);
+    });
 
-    app.delete('/tasks/:id', async (req, res) =>{
+    app.patch('/tasks/:id', async (req, res) => {
+      const id = req.params.id;
+      const updateData = req.body;
+      delete updateData._id;
+
+      const result = await tasksCollection.updateOne(
+        { _id: new ObjectId(id) },
+        { $set: updateData }
+      );
+
+      res.send(result);
+    });
+
+    app.delete('/tasks/:id', async (req, res) => {
       const tasksData = req.body;
       const result = await tasksCollection.deleteOne(tasksData);
-      res.send(result)
-    })
+      res.send(result);
+    });
 
     console.log(
       'Pinged your deployment. You successfully connected to MongoDB!'
