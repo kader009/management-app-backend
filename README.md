@@ -1,4 +1,4 @@
-# Task Job Backend
+# Task Management App Backend
 
 ## Table of Contents
 
@@ -6,8 +6,6 @@
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
-- [API Endpoints](#api-endpoints)
-- [Configuration](#configuration)
 - [Scripts](#scripts)
 
 
